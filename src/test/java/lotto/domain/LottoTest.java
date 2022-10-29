@@ -23,22 +23,32 @@ public class LottoTest {
     }
 
     @Test
-    void 구매한_로또와_당첨_번호간_3개_일치_테스트() {
-        Lotto prizeLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 2, 3, 4, 5, 6"));
-        Lotto inputLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 3, 4, 24, 35, 45"));
-        assertThat(inputLotto.findLottoPrize(prizeLotto)).isEqualTo(LottoPrize.FOURTH);
-    }
-
-    @Test
-    void 구매한_로또와_당첨_번호간_4개_일치_테스트() {
-        Lotto prizeLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 2, 3, 4, 5, 6"));
-        Lotto inputLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 3, 4, 5, 35, 45"));
-        assertThat(inputLotto.findLottoPrize(prizeLotto)).isEqualTo(LottoPrize.THIRD);
-    }
-
-    @Test
     void 로또_출력_테스트() {
         Lotto lotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 2, 3, 4, 5, 6"));
         assertThat(lotto.toString()).isEqualTo("[1, 2, 3, 4, 5, 6]");
+    }
+
+    @Test
+    void 구매한_로또와_당첨_번호간_4개_일치_및_보너스_일치_테스트() {
+        Lotto prizeLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 2, 3, 4, 5, 6"));
+        Lotto inputLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 3, 4, 5, 35, 45"));
+        LottoNumber bonusNumber = LottoNumber.from(35);
+        assertThat(inputLotto.findLottoPrize(prizeLotto, bonusNumber)).isEqualTo(LottoPrize.FOURTH);
+    }
+
+    @Test
+    void 구매한_로또와_당첨_번호간_5개_일치_및_보너스_불일치_테스트() {
+        Lotto prizeLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 2, 3, 4, 5, 6"));
+        Lotto inputLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 3, 4, 5, 6, 45"));
+        LottoNumber bonusNumber = LottoNumber.from(35);
+        assertThat(inputLotto.findLottoPrize(prizeLotto, bonusNumber)).isEqualTo(LottoPrize.THIRD);
+    }
+
+    @Test
+    void 구매한_로또와_당첨_번호간_5개_일치_및_보너스_일치_테스트() {
+        Lotto prizeLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 2, 3, 4, 5, 6"));
+        Lotto inputLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1, 3, 4, 5, 6, 45"));
+        LottoNumber bonusNumber = LottoNumber.from(45);
+        assertThat(inputLotto.findLottoPrize(prizeLotto, bonusNumber)).isEqualTo(LottoPrize.SECOND);
     }
 }

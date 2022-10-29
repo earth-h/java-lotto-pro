@@ -15,7 +15,8 @@ public class LottoResultsTest {
                 Lotto.generateLotto(new ReadLineLottoNumberGenerator("1,3,4,5,6,7")),
                 Lotto.generateLotto(new ReadLineLottoNumberGenerator("4,8,10,23,32,45"))));
         Lotto winningLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1,2,3,4,8,10"));
-        LottoResults lottoResults = lottos.createLottoResults(winningLotto);
+        LottoNumber bonusNumber = LottoNumber.from(12);
+        LottoResults lottoResults = lottos.createLottoResults(winningLotto, bonusNumber);
         assertThat(lottoResults.findProfits()).isEqualTo(new Money(60000));
     }
 
@@ -26,10 +27,11 @@ public class LottoResultsTest {
                 Lotto.generateLotto(new ReadLineLottoNumberGenerator("1,3,4,5,6,7")),
                 Lotto.generateLotto(new ReadLineLottoNumberGenerator("4,8,10,23,32,45"))));
         Lotto winningLotto = Lotto.generateLotto(new ReadLineLottoNumberGenerator("1,2,3,4,8,10"));
-        LottoResults lottoResults = lottos.createLottoResults(winningLotto);
+        LottoNumber bonusNumber = LottoNumber.from(12);
+        LottoResults lottoResults = lottos.createLottoResults(winningLotto, bonusNumber);
         assertAll(
-                () -> assertThat(lottoResults.findLottoResultCount(LottoPrize.FOURTH)).isEqualTo(2),
-                () -> assertThat(lottoResults.findLottoResultCount(LottoPrize.THIRD)).isEqualTo(1),
+                () -> assertThat(lottoResults.findLottoResultCount(LottoPrize.FIFTH)).isEqualTo(2),
+                () -> assertThat(lottoResults.findLottoResultCount(LottoPrize.FOURTH)).isEqualTo(1),
                 () -> assertThat(lottoResults.findLottoResultCount(LottoPrize.FIRST)).isZero()
         );
     }

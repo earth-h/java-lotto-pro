@@ -1,5 +1,6 @@
 package lotto.controller;
 
+import static lotto.view.InputView.printBonusLottoDirection;
 import static lotto.view.InputView.printPurchasingLottoDirection;
 import static lotto.view.InputView.printWinningLottoDirection;
 import static lotto.view.InputView.readLine;
@@ -10,6 +11,7 @@ import static lotto.view.ResultView.printPurchasingLottos;
 
 import common.utils.IntegerUtils;
 import lotto.domain.Lotto;
+import lotto.domain.LottoNumber;
 import lotto.domain.Lottos;
 import lotto.domain.Money;
 import lotto.domain.ReadLineLottoNumberGenerator;
@@ -22,7 +24,8 @@ public class LottoController {
     public void process() {
         Lottos lottos = createLottos(getMoney());
         Lotto winningLotto = getWinningLotto();
-        getLottoResults(lottos, winningLotto);
+        LottoNumber bonusNumber = getBonusLottoNumber();
+        getLottoResults(lottos, winningLotto, bonusNumber);
     }
 
     private Money getMoney() {
@@ -53,7 +56,18 @@ public class LottoController {
         }
     }
 
-    private void getLottoResults(Lottos lottos, Lotto winningLotto) {
-        printLottoResults(lottos.createLottoResults(winningLotto), lottos.findTotalPrice());
+    private LottoNumber getBonusLottoNumber() {
+        printBonusLottoDirection();
+        try {
+            String readLottoNumber = readLine();
+            return LottoNumber.from(IntegerUtils.parseInt(readLottoNumber));
+        } catch (IllegalArgumentException e) {
+            printExceptionErrorMessage(e);
+            return getBonusLottoNumber();
+        }
+    }
+
+    private void getLottoResults(Lottos lottos, Lotto winningLotto, LottoNumber bonumsNumber) {
+        printLottoResults(lottos.createLottoResults(winningLotto, bonumsNumber), lottos.findTotalPrice());
     }
 }

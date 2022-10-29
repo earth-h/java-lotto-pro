@@ -31,10 +31,10 @@ public class Lottos {
         return new Money(lottos.size() * LOTTO_PRICE);
     }
 
-    public LottoResults createLottoResults(Lotto winningLotto) {
+    public LottoResults createLottoResults(Lotto winningLotto, LottoNumber bonusNumber) {
         Map<LottoPrize, Integer> lottoResults = new HashMap<>();
         for(Lotto lotto: lottos) {
-            LottoPrize lottoPrize = lotto.findLottoPrize(winningLotto);
+            LottoPrize lottoPrize = lotto.findLottoPrize(winningLotto, bonusNumber);
             lottoResults.put(lottoPrize, lottoResults.getOrDefault(lottoPrize, DEFALUT_COUNT) + ADD_COUNT_AMOUNT);
         }
         return LottoResults.createLottoResults(lottoResults);
